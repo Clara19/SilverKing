@@ -4,21 +4,12 @@ plugins {
 
 repositories {
     mavenCentral()
+    maven {
+	url 'http://kompics.sics.se/maven/repository/'
+    }		
 }
-
-mainClassName = 'com.ms.silverking.compression.Main'
-
-sourceSets {
-  main {
-    java {
-      srcDir 'src'
-    }
-  }
-  test {
-    java {
-      srcDir 'test'
-    }
-  }
+configurations.all {
+    transitive = false
 }
 
 dependencies{
@@ -65,17 +56,4 @@ dependencies{
 task download(type: Copy) {
     from configurations.compile 
     into 'lib'
-}
-
-task createJar(type: Jar) {
-  dependsOn download
-  manifest {
-    attributes(
-        "Main-Class": mainClassName,
-        "Class-Path": pathjar.getClassPath().collect{ it }.join(' ')
-    )
-  }
-  destinationDir = file("$rootDir/lib/")
-  baseName = 'silverking'
-  with jar
 }
