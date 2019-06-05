@@ -5,6 +5,22 @@ plugins {
 repositories {
     mavenCentral()
 }
+
+mainClassName = 'com.ms.silverking.compression.Main'
+
+sourceSets {
+  main {
+    java {
+      srcDir 'src'
+    }
+  }
+  test {
+    java {
+      srcDir 'test'
+    }
+  }
+}
+
 dependencies{
   compile group: 'args4j', name: 'args4j', version: '2.0.12'
   compile group: 'org.ow2.asm', name: 'asm', version: '4.1'
@@ -49,4 +65,17 @@ dependencies{
 task download(type: Copy) {
     from configurations.compile 
     into 'lib'
+}
+
+task createJar(type: Jar) {
+  dependsOn download
+  manifest {
+    attributes(
+        "Main-Class": mainClassName,
+        "Class-Path": pathjar.getClassPath().collect{ it }.join(' ')
+    )
+  }
+  destinationDir = file("$rootDir/lib/")
+  baseName = 'silverking'
+  with jar
 }
