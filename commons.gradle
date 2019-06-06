@@ -16,9 +16,20 @@ sourceSets {
     }
   }
 }
+
 configurations.all {
     transitive = false
 }
+
+task copyTestTxt(type: Copy) { 
+    from("$rootDir/test") { 
+         include "com/ms/silverking/fs/**/*.txt" 
+         include "com/ms/silverking/cloud/gridconfig/**/*.txt" 
+    } 
+    into "$rootDir/silverking-build/classes/test" 
+} 
+testClasses.dependsOn copyTestTxt
+
 task createJar(type: Jar) {
   manifest {
     attributes(
