@@ -1,0 +1,31 @@
+apply from: 'dependencies.gradle'
+
+mainClassName = 'com.ms.silverking.compression.Main'
+
+sourceSets {
+  main {
+    java {
+      srcDir 'src'
+      outputDir = file('classes/src')
+    }
+  }
+  test {
+    java {
+      srcDir 'test'
+      outputDir = file('classes/test')
+    }
+  }
+}
+configurations.all {
+    transitive = false
+}
+task createJar(type: Jar) {
+  manifest {
+    attributes(
+        "Main-Class": mainClassName
+    )
+  }
+  archiveName = 'silverking.jar'
+  destinationDir = file("$rootDir/lib/")
+  with jar
+}
